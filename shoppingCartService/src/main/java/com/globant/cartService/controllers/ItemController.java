@@ -8,14 +8,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import com.globant.cartService.entities.Item;
 import com.globant.cartService.exceptions.ItemNotFoundException;
-import com.globant.cartService.repositories.ItemRepository;
 import com.globant.cartService.services.ItemService;
 
 
 @RestController
 class ItemController {
-
-	// private final ItemRepositoryImpl repository = new ItemRepositoryImpl();
 
 	private final ItemService itemService;
 
