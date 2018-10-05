@@ -1,5 +1,6 @@
 package com.globant.cartService.controllers;
 
+
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -12,65 +13,83 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import com.globant.cartService.entities.ShoppingCart;
 import com.globant.cartService.exceptions.CartNotFoundException;
 
-import com.globant.cartService.repositories.ShoppingCartRepository;
+
+import com.globant.cartService.services.ShoppingCartService;
 
 
 @RestController
 public class ShoppingCartController {
 
 	
-	private final ShoppingCartRepository repository;
+	private final ShoppingCartService shoppingCartService;
 
-	ShoppingCartController(ShoppingCartRepository repository) {
-		this.repository = repository;
+	ShoppingCartController(ShoppingCartService shoppingCartService) {
+		this.shoppingCartService = shoppingCartService;
 	}
 	
 
-	@GetMapping("/carts")
+/*	@GetMapping("/carts")
 	List<ShoppingCart> all() {
-		return repository.findAll();
-	}
+		return shoppingCartService.findAll();
+	}*/
 	
 
 	@GetMapping("/carts/{id}")
-	ShoppingCart one(@PathVariable Long id) throws  CartNotFoundException {
-
-		return repository.findById(id)
-			.orElseThrow(() -> new CartNotFoundException(id));
+	ShoppingCart getCart(@PathVariable Long id) throws CartNotFoundException {
+		return shoppingCartService.findById(id);
 	}
-	
 	
 	@PostMapping("/carts")
 	@ResponseStatus(HttpStatus.CREATED)
-	ShoppingCart newCart(@RequestBody ShoppingCart newCart) {
-		return repository.save(newCart);
+	ShoppingCart createCart(@RequestBody ShoppingCart newCart) throws CartNotFoundException {
+		return shoppingCartService.create(newCart);
 	}
+	
 	
 	@PutMapping("/carts/{id}")
-	ShoppingCart replaceCart(@RequestBody ShoppingCart newCart, @PathVariable Long id) throws CartNotFoundException {
-
-		return repository.findById(id)
-			.map(cart -> {
-				cart.setItems(newCart.getItems());
-				cart.setState(newCart.getState());
-				return repository.save(cart);
-			})
-			.orElseThrow(() -> new CartNotFoundException(id));
+	ShoppingCart replaceCart(@RequestBody ShoppingCart updatedCart, @PathVariable Long id) throws CartNotFoundException {
+	    shoppingCartService.update(id, updatedCart);
+		return shoppingCartService.findById(id); //Build cart on demand with external data as title and price of items
 	}
 	
-	@DeleteMapping("/carts/{id}")
+	
+	
+	@DeleteMapping("/cartsNew/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	void deleteCart(@PathVariable Long id) throws CartNotFoundException {
-		if (repository.existsById(id))
-			repository.deleteById(id);
-		else
-			throw new CartNotFoundException(id);
-			
+		shoppingCartService.deleteById(id);
 	}
+/*	
+	@PutMapping("/carts/{cartId}/items/{itemId}")
+	ShoppingCart addItem(@PathVariable Long itemId, @PathVariable Long cartId) throws CartNotFoundException {
 	
+		return repository.findById(cartId)
+				.map(cart -> {
+					cart.getItems().add(itemService.getItemById(itemId));
+					return repository.save(cart);
+				})
+				.orElseThrow(() -> new CartNotFoundException(cartId));
+
+	}*/
 	
+/*	@DeleteMapping("/carts/{cartId}/items/{itemId}")
+	ShoppingCart removeItem(@PathVariable Long cartId , @PathVariable Long itemId) throws CartNotFoundException {
+		return repository.findById(cartId)
+				.map(cart -> {
+				      Iterator iter =  cart.getItems().iterator();
+				      while (iter.hasNext()) {
+				         if(((Item) iter.next()).getItemId().longValue() == itemId) 
+				        	 iter.remove();
+				         
+				      }
+					return repository.save(cart);
+				})
+				.orElseThrow(() -> new CartNotFoundException(cartId));
+			
+	}*/
 
 }

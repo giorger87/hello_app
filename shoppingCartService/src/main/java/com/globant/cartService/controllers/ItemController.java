@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.globant.cartService.entities.Item;
 import com.globant.cartService.exceptions.ItemNotFoundException;
 import com.globant.cartService.repositories.ItemRepository;
+import com.globant.cartService.services.ItemService;
 
 
 @RestController
@@ -16,22 +17,22 @@ class ItemController {
 
 	// private final ItemRepositoryImpl repository = new ItemRepositoryImpl();
 
-	private final ItemRepository repository;
+	private final ItemService itemService;
 
-	ItemController(ItemRepository itemRepository) {
-		this.repository = itemRepository;
+	ItemController(ItemService  itemService) {
+		this.itemService = itemService;
 	}
 
 	@GetMapping("/items")
 	List<Item> all() {
-		return repository.findAll();
+		return itemService.getAll();
 	}
 
 	// Single item
 	@GetMapping("/items/{id}")
 	Item one(@PathVariable Long id) throws ItemNotFoundException {
-		return repository.findById(id)
-				.orElseThrow(() -> new ItemNotFoundException(id));
+		return itemService.getItemById(id);
+				
 	}
 
 }

@@ -1,12 +1,10 @@
 package com.globant.cartService.repositories;
 
-
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.globant.cartService.entities.Item;
+import com.globant.cartService.entities.User;
 @Repository
-public interface ItemRepository extends JpaRepository<Item, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
 }
