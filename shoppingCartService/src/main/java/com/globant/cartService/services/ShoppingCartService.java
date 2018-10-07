@@ -4,8 +4,7 @@ package com.globant.cartService.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 import org.springframework.stereotype.Service;
 
@@ -16,7 +15,6 @@ import com.globant.cartService.repositories.ItemRepository;
 
 import com.globant.cartService.repositories.ShoppingCartRepository;
 
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 public class ShoppingCartService {
@@ -62,7 +60,6 @@ public class ShoppingCartService {
 		return shoppingCartRepository.findById(id)
 				.map(cart -> {
 					cart.setItems(updatedCart.getItems());
-					cart.setState(updatedCart.getState());
 					itemRepository.saveAll(cart.getItems());
 					return shoppingCartRepository.save(cart);
 					

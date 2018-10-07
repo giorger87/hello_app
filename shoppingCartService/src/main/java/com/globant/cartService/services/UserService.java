@@ -1,12 +1,11 @@
 package com.globant.cartService.services;
 
-import java.util.ArrayList;
+
 import java.util.List;
-import java.util.Optional;
+
 
 import org.springframework.stereotype.Service;
 
-import com.globant.cartService.entities.Item;
 import com.globant.cartService.entities.ShoppingCart;
 import com.globant.cartService.entities.User;
 import com.globant.cartService.exceptions.CartNotFoundException;
@@ -45,6 +44,7 @@ public class UserService {
 	
 	public ShoppingCart addCart(Long userId,ShoppingCart newCart) throws CartNotFoundException {
 		newCart.setUser(this.getUser(userId));
+		newCart.setState("Pending");
 		return shoppingCartService.create(newCart);
 
 	}
