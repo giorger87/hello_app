@@ -17,6 +17,9 @@ public class ShoppingCartDTO {
 	@JsonProperty(access = Access.READ_ONLY) //To avoid change state when create or update a cart
 	private String state;
 
+	@JsonProperty(access = Access.READ_ONLY) //To avoid change total when create or update a cart
+	private Double total;
+	
 	public ShoppingCartDTO() {
 			
 		}
@@ -48,6 +51,14 @@ public class ShoppingCartDTO {
 
 	public void setState(String state) {
 		this.state = state;
+	}
+
+	public Double getTotal() {
+		return total;
+	}
+
+	public void setTotal(Double total) {
+		this.total = total;
 	}
 
 	
