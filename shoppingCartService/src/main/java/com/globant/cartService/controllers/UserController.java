@@ -25,7 +25,7 @@ public class UserController {
 	private final UserService userService;
 	private ModelMapper modelMapper = new ModelMapper();
 	
-	UserController(UserService userService) {
+	public UserController(UserService userService) {
 		this.userService = userService;
 	}
 	
